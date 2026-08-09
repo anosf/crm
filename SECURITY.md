@@ -4,7 +4,7 @@
 
 Please report security issues privately, not as a public issue.
 
-Use GitHub's **[Report a vulnerability](https://github.com/yamz8/open-crm/security/advisories/new)**
+Use GitHub's **[Report a vulnerability](https://github.com/anosf/crm/security/advisories/new)**
 form, which opens a private advisory only the maintainers can see.
 
 Please include:
@@ -24,7 +24,7 @@ public. Please do not test against someone else's deployment.
 
 ## Supported versions
 
-open-crm is pre-1.0. Only the latest release receives security fixes.
+crm is pre-1.0. Only the latest release receives security fixes.
 
 | Version | Supported |
 | --- | --- |
@@ -44,7 +44,7 @@ Findings we would particularly like to hear about:
 
 ## What is out of scope
 
-- **Misconfiguration of your own deployment.** Running without `OPEN_CRM_SECRET`, exposing
+- **Misconfiguration of your own deployment.** Running without `CRM_SECRET`, exposing
   the port directly without TLS, or setting `TRUST_PROXY=true` without a proxy in front are
   operator errors. `npm run selfcheck` flags several of them.
 - **First-run setup being open before you complete it.** Any instance is claimable by the
@@ -61,5 +61,5 @@ Findings we would particularly like to hear about:
 ## Hardening a deployment
 
 See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for the production checklist. The short version:
-set `OPEN_CRM_SECRET`, terminate TLS in front of the app, keep `WEBHOOK_ALLOW_PRIVATE=false`,
+set `CRM_SECRET`, terminate TLS in front of the app, keep `WEBHOOK_ALLOW_PRIVATE=false`,
 give each agent its own narrowly scoped token, and run `npm run selfcheck` after any change.

@@ -4,7 +4,7 @@
  * /api/v1/discover, machine-readably.
  */
 export function buildLlmsTxt(publicUrl: string): string {
-  return `# open-crm
+  return `# crm
 
 > A self-hosted CRM built to be operated by both humans and AI agents. REST, MCP, and CLI
 > all sit on one service layer, so every interface shares the same permissions and the same
@@ -16,7 +16,7 @@ OpenAPI 3.1: ${publicUrl}/openapi.json
 
 ## Authenticate
 
-    Authorization: Bearer ocrm_<prefix>_<secret>
+    Authorization: Bearer crm_<prefix>_<secret>
 
 A signed-in human mints tokens with POST /api/v1/tokens. Prefer narrow scopes
 ("contacts:write", "deals:read") over "*". Check yours with GET /api/v1/auth/me.
@@ -63,7 +63,7 @@ write a note on the timeline when you change something a person will wonder abou
 
 ## MCP
 
-    npx open-crm-server mcp        # stdio, reads OPEN_CRM_URL and OPEN_CRM_TOKEN
+    npx @anosf/crm mcp        # stdio, reads CRM_URL and CRM_TOKEN
     ${publicUrl}/mcp        # streamable HTTP
 
 The tools mirror the endpoints above and enforce the same scopes.

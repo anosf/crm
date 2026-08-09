@@ -19,7 +19,7 @@ import { registerSystemRoutes } from './routes/system.ts';
 import { registerDiscoveryRoutes, registerRootDocs } from './routes/discovery.ts';
 import { registerMcpRoute } from '../mcp/http.ts';
 
-export const SESSION_COOKIE = 'ocrm_session';
+export const SESSION_COOKIE = 'crm_session';
 
 export function requireCtx(request: FastifyRequest): Ctx {
   if (!request.ctx) throw unauthorized();
@@ -114,7 +114,7 @@ export async function buildServer(app: App): Promise<FastifyInstance> {
   fastify.addHook('onSend', async (request, reply, payload) => {
     reply.header('x-request-id', request.id);
     reply.header(
-      'x-open-crm-actor',
+      'x-crm-actor',
       request.ctx ? `${request.ctx.actor.type}:${request.ctx.actor.label}` : 'anonymous',
     );
     return payload;

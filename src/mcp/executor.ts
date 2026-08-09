@@ -43,7 +43,7 @@ export function injectExecutor(
   };
 }
 
-/** Talks to a remote open-crm over HTTP. Used by the stdio MCP server. */
+/** Talks to a remote crm over HTTP. Used by the stdio MCP server. */
 export function fetchExecutor(baseUrl: string, token: string): Executor {
   const base = baseUrl.replace(/\/+$/, '');
   return async (call) => {

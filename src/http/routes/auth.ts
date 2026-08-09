@@ -137,7 +137,7 @@ export async function registerAuthRoutes(fastify: FastifyInstance): Promise<void
       warning: 'This is the only time the token value is shown. Store it now.',
       usage: {
         http: `curl -H "Authorization: Bearer ${token}" ${app.config.publicUrl}/api/v1/contacts`,
-        mcp_env: `OPEN_CRM_URL=${app.config.publicUrl} OPEN_CRM_TOKEN=${token}`,
+        mcp_env: `CRM_URL=${app.config.publicUrl} CRM_TOKEN=${token}`,
       },
     };
   });

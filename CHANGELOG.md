@@ -1,10 +1,24 @@
 # Changelog
 
-Notable changes to open-crm. Format loosely follows [Keep a Changelog](https://keepachangelog.com);
+Notable changes to crm. Format loosely follows [Keep a Changelog](https://keepachangelog.com);
 versions follow [semantic versioning](https://semver.org). While the project is pre-1.0, minor
 versions may contain breaking changes — those are always listed first.
 
 ## [Unreleased]
+
+## [0.2.0] — 2026-08-09
+
+### Changed
+
+- **The project is now `@anosf/crm`, published by [ANOSF](https://github.com/anosf)** — the
+  Agent Native Open Source Foundation, an umbrella for open software designed for agents from
+  the ground up. The repository is `anosf/crm`, the image is `ghcr.io/anosf/crm`, the command
+  is `crm`, and the npm package is `@anosf/crm`.
+- Environment variables lost their old prefix: `OPEN_CRM_SECRET`, `OPEN_CRM_URL`, and
+  `OPEN_CRM_TOKEN` are now `CRM_SECRET`, `CRM_URL`, and `CRM_TOKEN`.
+- API tokens are issued as `crm_…` rather than the old `ocrm_…`, the session cookie is `crm_session`,
+  and webhook headers are `x-crm-*`. Tokens and sessions issued by 0.1.x are not recognised;
+  re-issue them.
 
 ### Added
 
@@ -28,12 +42,12 @@ versions may contain breaking changes — those are always listed first.
 
 ### Changed
 
-- **The npm package is `open-crm-server`, not `open-crm`.** npm's registry refuses the
-  unscoped name `open-crm` as too similar to the existing `open-cli` package, so the
-  `npx open-crm mcp` line that 0.1.0 documented in the README, the web UI, `/llms.txt`, and the
+- **The npm package is `@anosf/crm`, not `crm`.** npm's registry refuses the
+  unscoped name `crm` as too similar to the existing `open-cli` package, so the
+  `npx @anosf/crm mcp` line that 0.1.0 documented in the README, the web UI, `/llms.txt`, and the
   MCP server's own error message could never have worked. Every reference now reads
-  `npx open-crm-server mcp`. The repository, the container image, and the installed command are
-  all still `open-crm`; only the npm install path changed.
+  `npx @anosf/crm mcp`. The repository, the container image, and the installed command are
+  all still `crm`; only the npm install path changed.
 
 ## [0.1.0] — 2026-08-08
 
@@ -74,7 +88,7 @@ permission model, the same validation, and the same reversible audit trail.
 - `GET /api/v1/system/selfcheck` — schema, integrity, search index, domain invariant, and
   configuration checks; every non-passing check carries a remedy, and `POST …?repair=true`
   fixes what it safely can
-- `open-crm backup` — consistent, compacted, integrity-verified snapshot taken while the
+- `crm backup` — consistent, compacted, integrity-verified snapshot taken while the
   server is running
 - Outbound webhooks with HMAC-signed payloads and delivery history
 - Docker image running as a non-root user with a health check, and a `docker compose` setup
@@ -98,6 +112,7 @@ Findings from the pre-release security review, fixed before publication:
   cookie alone; cookie-authenticated writes must declare a JSON content type
 - Password attempts get their own tight rate-limit bucket, separate from the general budget
 
-[Unreleased]: https://github.com/yamz8/open-crm/compare/v0.1.1...HEAD
-[0.1.1]: https://github.com/yamz8/open-crm/releases/tag/v0.1.1
-[0.1.0]: https://github.com/yamz8/open-crm/releases/tag/v0.1.0
+[Unreleased]: https://github.com/anosf/crm/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/anosf/crm/releases/tag/v0.2.0
+[0.1.1]: https://github.com/anosf/crm/releases/tag/v0.1.1
+[0.1.0]: https://github.com/anosf/crm/releases/tag/v0.1.0

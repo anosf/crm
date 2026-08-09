@@ -48,13 +48,13 @@ const out = (value: unknown): void => {
   process.stdout.write(`${typeof value === 'string' ? value : JSON.stringify(value, null, 2)}\n`);
 };
 
-const HELP = `open-crm ${VERSION} — self-hosted CRM for humans and agents
+const HELP = `crm ${VERSION} — self-hosted CRM for humans and agents
 
-Usage: open-crm <command> [options]
+Usage: crm <command> [options]
 
 Running
   serve                        Start the HTTP server and web UI (same as \`npm start\`)
-  mcp                          Run the stdio MCP server (needs OPEN_CRM_URL, OPEN_CRM_TOKEN)
+  mcp                          Run the stdio MCP server (needs CRM_URL, CRM_TOKEN)
 
 Setup
   migrate                      Apply pending database migrations
@@ -140,7 +140,7 @@ async function run(): Promise<number> {
           const password = String(flags['password'] ?? '');
           const userName = String(flags['name'] ?? email.split('@')[0] ?? '');
           if (!email || !password) {
-            out('Usage: open-crm user create --email <email> --name <name> --password <password>');
+            out('Usage: crm user create --email <email> --name <name> --password <password>');
             return 1;
           }
           if (findUserByEmail(app.db, email)) {
@@ -151,7 +151,7 @@ async function run(): Promise<number> {
           out(createUser(ctx, { email, name: userName, password, role }, { bypassAuth: true }));
           return 0;
         }
-        out('Usage: open-crm user <create|list>');
+        out('Usage: crm user <create|list>');
         return 1;
       }
 
@@ -177,11 +177,11 @@ async function run(): Promise<number> {
             ...record,
             token,
             warning: 'Copy this now — the value is never shown again.',
-            mcp_setup: `OPEN_CRM_URL=${app.config.publicUrl} OPEN_CRM_TOKEN=${token} npx open-crm-server mcp`,
+            mcp_setup: `CRM_URL=${app.config.publicUrl} CRM_TOKEN=${token} npx @anosf/crm mcp`,
           });
           return 0;
         }
-        out('Usage: open-crm token <create|list>');
+        out('Usage: crm token <create|list>');
         return 1;
       }
 
@@ -238,7 +238,7 @@ async function run(): Promise<number> {
       case 'search': {
         const query = rest.join(' ');
         if (!query) {
-          out('Usage: open-crm search <query>');
+          out('Usage: crm search <query>');
           return 1;
         }
         const result = search(ctx, {
@@ -256,7 +256,7 @@ async function run(): Promise<number> {
         const type = rest[0];
         const def = type ? RESOURCES[type] : undefined;
         if (!def) {
-          out(`Usage: open-crm list <${RESOURCE_LIST.map((r) => r.name).join('|')}>`);
+          out(`Usage: crm list <${RESOURCE_LIST.map((r) => r.name).join('|')}>`);
           return 1;
         }
         const filter: Record<string, string> = {};

@@ -75,7 +75,7 @@ jobs:
       - name: The published image must actually boot
         run: |
           docker run -d --name crm -p 4000:4000 \
-            -e OPEN_CRM_SECRET=release-verification-only \
+            -e CRM_SECRET=release-verification-only \
             ghcr.io/${{ github.repository }}:${GITHUB_REF_NAME#v}
           for i in $(seq 1 40); do
             curl -fsS http://localhost:4000/readyz && exit 0
@@ -90,7 +90,7 @@ jobs:
     runs-on: ubuntu-latest
     # Skipped on forks. Also a no-op until npm publishing is set up — see the
     # "Publishing to npm" section of CONTRIBUTING.md.
-    if: ${{ github.repository_owner == 'yamz8' }}
+    if: ${{ github.repository_owner == 'anosf' }}
     permissions:
       contents: read
       # Required by `npm publish --provenance`: the signed attestation is built

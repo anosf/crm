@@ -545,7 +545,7 @@ describe('authentication and permissions', () => {
   });
 
   test('rejects an invalid token', async () => {
-    const response = await h.api('GET', '/api/v1/contacts', { token: 'ocrm_deadbeef_nope' });
+    const response = await h.api('GET', '/api/v1/contacts', { token: 'crm_deadbeef_nope' });
     assert.equal(response.status, 401);
   });
 

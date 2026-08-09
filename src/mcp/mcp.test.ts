@@ -181,7 +181,7 @@ describe('MCP tools', () => {
   });
 
   test('a scoped token is refused at the MCP layer too', async () => {
-    const restricted = injectExecutor(h.server, 'Bearer ocrm_bad_token');
+    const restricted = injectExecutor(h.server, 'Bearer crm_bad_token');
     const tool = TOOLS_BY_NAME.get('crm_list')!;
     const result = await restricted(tool.build({ type: 'contact' }));
     assert.equal(result.status, 401);
@@ -232,7 +232,7 @@ describe('MCP over HTTP', () => {
     });
     assert.equal(init.statusCode, 200);
     const body = JSON.parse(init.body);
-    assert.equal(body.result.serverInfo.name, 'open-crm');
+    assert.equal(body.result.serverInfo.name, 'crm');
     assert.ok(body.result.instructions.includes('crm_work_queue'));
   });
 });

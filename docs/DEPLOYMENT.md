@@ -1,6 +1,6 @@
-# Deploying open-crm
+# Deploying crm
 
-open-crm is one Node process and one SQLite file. There is no database server, no queue, and
+crm is one Node process and one SQLite file. There is no database server, no queue, and
 no cache to operate. This guide covers getting that process onto the internet safely, and
 keeping the file safe once it has your data in it.
 
@@ -10,7 +10,7 @@ keeping the file safe once it has your data in it.
 
 Four things, in order of how much they matter.
 
-**1. Set `OPEN_CRM_SECRET`.** Session cookies and API tokens are keyed to it. Without it the
+**1. Set `CRM_SECRET`.** Session cookies and API tokens are keyed to it. Without it the
 app falls back to a well-known development key, which means anyone who reads the source can
 forge a session.
 
@@ -31,14 +31,14 @@ the URL first can claim the instance. Either finish setup the moment you deploy,
 with `ALLOW_SETUP=false` and create the owner from the CLI:
 
 ```bash
-docker compose exec open-crm node src/cli/main.ts user create \
+docker compose exec crm node src/cli/main.ts user create \
   --email you@example.com --name "Your Name" --password '…' --role owner
 ```
 
 **4. Run the self-check.** It will tell you what you missed.
 
 ```bash
-docker compose exec open-crm node src/cli/main.ts selfcheck
+docker compose exec crm node src/cli/main.ts selfcheck
 ```
 
 ---
@@ -47,7 +47,7 @@ docker compose exec open-crm node src/cli/main.ts selfcheck
 
 ```bash
 cp .env.example .env
-echo "OPEN_CRM_SECRET=$(openssl rand -hex 32)" >> .env
+echo "CRM_SECRET=$(openssl rand -hex 32)" >> .env
 # edit .env: set PUBLIC_URL to your https:// address
 docker compose up -d
 ```
@@ -59,8 +59,8 @@ To use the published image instead of building locally:
 
 ```yaml
 services:
-  open-crm:
-    image: ghcr.io/yamz8/open-crm:0.1.0 # pin a version, not :latest
+  crm:
+    image: ghcr.io/anosf/crm:0.1.0 # pin a version, not :latest
 ```
 
 The image is public and needs no authentication to pull — packages published with the
@@ -123,15 +123,15 @@ write-ahead log and produce a subtly corrupt copy. Use the built-in command, whi
 consistent snapshot while the server keeps running and then verifies it:
 
 ```bash
-docker compose exec open-crm node src/cli/main.ts backup
-# → /data/backups/open-crm-2026-08-08T19-56-30.db  (integrity: ok)
+docker compose exec crm node src/cli/main.ts backup
+# → /data/backups/crm-2026-08-08T19-56-30.db  (integrity: ok)
 ```
 
 A nightly cron entry on the host:
 
 ```cron
-0 3 * * * docker compose -f /srv/open-crm/docker-compose.yml exec -T open-crm \
-  node src/cli/main.ts backup >> /var/log/open-crm-backup.log 2>&1
+0 3 * * * docker compose -f /srv/crm/docker-compose.yml exec -T crm \
+  node src/cli/main.ts backup >> /var/log/crm-backup.log 2>&1
 ```
 
 Copy the resulting files somewhere off the machine — a backup on the same disk protects you
@@ -141,11 +141,11 @@ policy calls for.
 **Restoring** is a file move, and the server must be stopped so nothing is mid-write:
 
 ```bash
-docker compose stop open-crm
-docker compose run --rm --entrypoint sh open-crm -c \
-  'cp /data/backups/open-crm-2026-08-08T19-56-30.db /data/open-crm.db && rm -f /data/open-crm.db-wal /data/open-crm.db-shm'
-docker compose start open-crm
-docker compose exec open-crm node src/cli/main.ts selfcheck
+docker compose stop crm
+docker compose run --rm --entrypoint sh crm -c \
+  'cp /data/backups/crm-2026-08-08T19-56-30.db /data/crm.db && rm -f /data/crm.db-wal /data/crm.db-shm'
+docker compose start crm
+docker compose exec crm node src/cli/main.ts selfcheck
 ```
 
 Test a restore before you need one. An untested backup is a hope.
@@ -157,10 +157,10 @@ Test a restore before you need one. An untested backup is a hope.
 Migrations run automatically on boot and are append-only, so the normal path is:
 
 ```bash
-docker compose exec open-crm node src/cli/main.ts backup   # always first
+docker compose exec crm node src/cli/main.ts backup   # always first
 docker compose pull
 docker compose up -d
-docker compose exec open-crm node src/cli/main.ts selfcheck
+docker compose exec crm node src/cli/main.ts selfcheck
 ```
 
 If you ever roll back to an older image, `selfcheck` will warn that the database contains
@@ -174,7 +174,7 @@ running that way.
 Each agent gets its own token, named for what it is, with the narrowest scopes that work:
 
 ```bash
-docker compose exec open-crm node src/cli/main.ts token create \
+docker compose exec crm node src/cli/main.ts token create \
   --name nightly-enrichment \
   --scopes "contacts:read,contacts:write,companies:read,insights:read"
 ```
@@ -232,14 +232,14 @@ well-known locking problems and will eventually corrupt the file.
 
 ## Environment reference
 
-Every setting has a working default except `OPEN_CRM_SECRET`. See [.env.example](../.env.example)
+Every setting has a working default except `CRM_SECRET`. See [.env.example](../.env.example)
 for the annotated list. The ones that matter most in production:
 
 | Variable | Default | Notes |
 | --- | --- | --- |
-| `OPEN_CRM_SECRET` | — | **Required in production.** Keys sessions and tokens |
+| `CRM_SECRET` | — | **Required in production.** Keys sessions and tokens |
 | `PUBLIC_URL` | `http://localhost:4000` | Must match the real URL; drives the `Secure` cookie flag |
-| `DATABASE_URL` | `data/open-crm.db` | Local disk only |
+| `DATABASE_URL` | `data/crm.db` | Local disk only |
 | `TRUST_PROXY` | `false` | `true` only behind a proxy you control |
 | `ALLOW_SETUP` | `true` | `false` once the owner account exists |
 | `WEBHOOK_ALLOW_PRIVATE` | `false` | `true` only to reach a sibling container |

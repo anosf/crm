@@ -82,10 +82,10 @@ function resolveDatabasePath(raw: string): string {
 export function loadConfig(overrides: Partial<AppConfig> = {}): AppConfig {
   const env = str('NODE_ENV', 'development') as AppConfig['env'];
   const port = int('PORT', 4000);
-  const secret = str('OPEN_CRM_SECRET', '');
+  const secret = str('CRM_SECRET', '');
   if (!secret && env === 'production') {
     throw new Error(
-      'OPEN_CRM_SECRET must be set in production. Generate one with: openssl rand -hex 32',
+      'CRM_SECRET must be set in production. Generate one with: openssl rand -hex 32',
     );
   }
   const config: AppConfig = {
@@ -93,7 +93,7 @@ export function loadConfig(overrides: Partial<AppConfig> = {}): AppConfig {
     host: str('HOST', '0.0.0.0'),
     port,
     publicUrl: str('PUBLIC_URL', `http://localhost:${port}`).replace(/\/+$/, ''),
-    databaseUrl: resolveDatabasePath(str('DATABASE_URL', 'data/open-crm.db')),
+    databaseUrl: resolveDatabasePath(str('DATABASE_URL', 'data/crm.db')),
     sessionTtlHours: int('SESSION_TTL_HOURS', 24 * 14),
     secret: secret || 'insecure-development-secret-change-me',
     logLevel: str('LOG_LEVEL', env === 'test' ? 'silent' : 'info'),

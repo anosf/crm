@@ -1,12 +1,15 @@
-# open-crm
+# CRM
 
-[![CI](https://github.com/yamz8/open-crm/actions/workflows/ci.yml/badge.svg)](https://github.com/yamz8/open-crm/actions/workflows/ci.yml)
+[![CI](https://github.com/anosf/crm/actions/workflows/ci.yml/badge.svg)](https://github.com/anosf/crm/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%E2%89%A522.18-brightgreen.svg)](https://nodejs.org)
 [![MCP](https://img.shields.io/badge/MCP-24%20tools-8b5cf6.svg)](#designed-for-agents)
 
-A self-hosted, open-source CRM built for two kinds of users at once: **people**, through a
-fast web UI, and **AI agents**, through a REST API, an MCP server, and a CLI.
+An **agent-native**, self-hosted CRM, built for two kinds of users at once: **people**,
+through a fast web UI, and **AI agents**, through a REST API, an MCP server, and a CLI.
+
+From [ANOSF](https://github.com/anosf) — the Agent Native Open Source Foundation, an umbrella
+for open software designed for AI agents from the ground up rather than retrofitted for them.
 
 It is not a CRM with an API bolted on. Every interface calls the same service layer, so an
 agent and a human get the same permissions, the same validation, and the same audit trail —
@@ -30,7 +33,7 @@ and any change either of them makes can be reviewed and undone.
 ## Quick start
 
 ```bash
-git clone <this repo> open-crm && cd open-crm
+git clone <this repo> crm && cd crm
 npm install
 npm run build:web
 npm run seed          # default pipeline + demo records (optional)
@@ -43,7 +46,7 @@ Open <http://localhost:4000> and create the first account.
 
 ```bash
 cp .env.example .env
-echo "OPEN_CRM_SECRET=$(openssl rand -hex 32)" >> .env
+echo "CRM_SECRET=$(openssl rand -hex 32)" >> .env
 docker compose up -d
 ```
 
@@ -51,8 +54,8 @@ Data lives in a named volume at `/data`. Take a consistent, verified snapshot at
 without stopping the server:
 
 ```bash
-docker compose exec open-crm node src/cli/main.ts backup
-# → /data/backups/open-crm-2026-08-08T19-56-30.db  (integrity: ok)
+docker compose exec crm node src/cli/main.ts backup
+# → /data/backups/crm-2026-08-08T19-56-30.db  (integrity: ok)
 ```
 
 Do not back the file up with `cp` — that can miss the write-ahead log and produce a subtly
@@ -105,14 +108,14 @@ Most CRMs treat automation as a second-class integration surface. Here it is the
 # Create a token from the UI (Agents & API), or:
 npm run cli -- token create --name claude-code --scopes "contacts:write,companies:write,deals:write,activities:write,tasks:write,insights:read"
 
-claude mcp add open-crm \
-  --env OPEN_CRM_URL=http://localhost:4000 \
-  --env OPEN_CRM_TOKEN=ocrm_... \
-  -- npx open-crm-server mcp
+claude mcp add crm \
+  --env CRM_URL=http://localhost:4000 \
+  --env CRM_TOKEN=crm_... \
+  -- npx @anosf/crm mcp
 ```
 
-The npm package is published as `open-crm-server` (npm refuses `open-crm` as too close to an
-existing package); the repository, image, and installed command are all still `open-crm`.
+The npm package is published as `@anosf/crm` (npm refuses `crm` as too close to an
+existing package); the repository, image, and installed command are all still `crm`.
 
 The MCP server exposes 24 tools (`crm_search`, `crm_get_context`, `crm_move_deal`,
 `crm_work_queue`, `crm_audit`, `crm_revert`, …), four resources, and three prompts
@@ -123,7 +126,7 @@ There is also a streamable-HTTP MCP endpoint at `/mcp` for clients that prefer i
 ### Or just use HTTP
 
 ```bash
-curl -H "Authorization: Bearer $OPEN_CRM_TOKEN" \
+curl -H "Authorization: Bearer $CRM_TOKEN" \
   "http://localhost:4000/api/v1/deals?filter[status]=open&filter[amount__gte]=100000&sort=-amount"
 ```
 
@@ -148,8 +151,8 @@ npm run cli -- selfcheck            # or GET /api/v1/system/selfcheck
 ✓ search_index             Search index matches all records
 ✓ deal_stage_consistency   Every deal status matches its stage outcome
 ✓ activity_attachment      Every activity is attached to a record
-! instance_secret          OPEN_CRM_SECRET is unset, so sessions use a well-known key
-  → Set OPEN_CRM_SECRET to a random 32-byte hex string and restart.
+! instance_secret          CRM_SECRET is unset, so sessions use a well-known key
+  → Set CRM_SECRET to a random 32-byte hex string and restart.
 ```
 
 Every non-passing check explains what to do about it, and `?repair=true` fixes the ones that
@@ -225,7 +228,7 @@ browser bundle is built.
 
 ## Configuration
 
-Every setting has a working default except `OPEN_CRM_SECRET`, which is required in production
+Every setting has a working default except `CRM_SECRET`, which is required in production
 and derives session and token lookup keys. See [.env.example](.env.example).
 
 ## Security notes
@@ -238,7 +241,7 @@ and derives session and token lookup keys. See [.env.example](.env.example).
 - API tokens can never exceed the role of the user who minted them, and they do not outlive
   that account: deleting or disabling a user revokes the tokens they created, and a token
   whose creator is gone is refused rather than falling back to a default role.
-- Webhook payloads are signed: `x-open-crm-signature: sha256=HMAC(secret, "<timestamp>.<body>")`.
+- Webhook payloads are signed: `x-crm-signature: sha256=HMAC(secret, "<timestamp>.<body>")`.
 - Webhook destinations are restricted to `http(s)` and re-resolved before every delivery;
   private, loopback, and link-local addresses are refused and redirects are not followed, so a
   webhook cannot be turned into a port scanner or a route to cloud metadata. Set

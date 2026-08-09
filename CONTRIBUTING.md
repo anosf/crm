@@ -6,7 +6,7 @@ otherwise open to change.
 ## Getting set up
 
 ```bash
-git clone https://github.com/yamz8/open-crm.git && cd open-crm
+git clone https://github.com/anosf/crm.git && cd crm
 npm install
 npm run build:web
 npm run seed          # default pipeline + demo records
@@ -95,7 +95,7 @@ $EDITOR CHANGELOG.md          # add a "## [0.2.0]" section
 
 # 2. Tag and push
 git commit -am "Release 0.2.0"
-git tag -a v0.2.0 -m "open-crm 0.2.0"
+git tag -a v0.2.0 -m "crm 0.2.0"
 git push origin main --follow-tags
 ```
 
@@ -107,7 +107,7 @@ ready, and drafts a GitHub release.
 
 The npm job skips with a logged message until this is set up, so releases stay green
 either way. The container image is the primary artifact; npm exists only so that
-`npx open-crm-server mcp` works.
+`npx @anosf/crm mcp` works.
 
 **The first publish cannot be automated.** npm's OIDC trusted publishing is configured in a
 package's settings page, which requires the package to already exist — a deliberate guard
@@ -122,15 +122,15 @@ npm publish --access public     # `npm run check` runs first via prepublishOnly
 no long-lived credential to leak or rotate:
 
 1. On npmjs.com, open the package → Settings → Trusted Publisher → GitHub Actions, and enter
-   the organisation (`yamz8`), the repository (`open-crm`), and the workflow filename
+   the organisation (`anosf`), the repository (`crm`), and the workflow filename
    (`release.yml` — filename only, not a path).
 2. Add a repository variable so the workflow takes the OIDC path:
    ```bash
-   gh variable set NPM_TRUSTED_PUBLISHING --body true --repo yamz8/open-crm
+   gh variable set NPM_TRUSTED_PUBLISHING --body true --repo anosf/crm
    ```
 3. Delete the `NPM_TOKEN` secret if one was ever added:
    ```bash
-   gh secret delete NPM_TOKEN --repo yamz8/open-crm
+   gh secret delete NPM_TOKEN --repo anosf/crm
    ```
 
 From then on the workflow authenticates with a short-lived GitHub OIDC token, and npm attaches
@@ -142,7 +142,7 @@ publishing; Node 22 ships npm 10.
 to this package with publish permission and the shortest expiry you can live with, then:
 
 ```bash
-gh secret set NPM_TOKEN --repo yamz8/open-crm    # paste at the prompt, then Ctrl-D
+gh secret set NPM_TOKEN --repo anosf/crm    # paste at the prompt, then Ctrl-D
 ```
 
 Reading from the prompt keeps the token out of your shell history and off disk. Revoke it from

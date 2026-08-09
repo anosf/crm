@@ -12,7 +12,7 @@ await server.listen({ host: app.config.host, port: app.config.port });
 const url = app.config.publicUrl;
 const banner = [
   '',
-  `  open-crm is running`,
+  `  crm is running`,
   '',
   `  Web UI       ${url}`,
   `  API          ${url}/api/v1`,

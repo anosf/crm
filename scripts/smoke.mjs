@@ -11,8 +11,7 @@
 
 const args = process.argv.slice(2);
 const urlFlag = args.indexOf('--url');
-const BASE =
-  (urlFlag !== -1 ? args[urlFlag + 1] : process.env.OPEN_CRM_URL) ?? 'http://localhost:4000';
+const BASE = (urlFlag !== -1 ? args[urlFlag + 1] : process.env.CRM_URL) ?? 'http://localhost:4000';
 
 let passed = 0;
 let failed = 0;
@@ -47,7 +46,7 @@ const CREDENTIALS = {
 };
 
 async function main() {
-  process.stdout.write(`open-crm smoke test against ${BASE}\n\n`);
+  process.stdout.write(`crm smoke test against ${BASE}\n\n`);
 
   process.stdout.write('Reachability\n');
   const health = await json('/healthz');
@@ -91,19 +90,19 @@ async function main() {
       body: JSON.stringify(CREDENTIALS),
     });
     check('first-run setup creates the owner', created.status === 201);
-  } else if (!process.env.OPEN_CRM_TOKEN) {
+  } else if (!process.env.CRM_TOKEN) {
     process.stdout.write(
       '\n  This instance is already set up, so the smoke test cannot create its own owner.\n' +
-        '  Re-run with a token:  OPEN_CRM_TOKEN=ocrm_... node scripts/smoke.mjs --url ' +
+        '  Re-run with a token:  CRM_TOKEN=crm_... node scripts/smoke.mjs --url ' +
         BASE +
         '\n  Mint one with:        npm run cli -- token create --name smoke-test\n\n',
     );
     process.exit(1);
   } else {
-    process.stdout.write('  · instance already set up; using OPEN_CRM_TOKEN\n');
+    process.stdout.write('  · instance already set up; using CRM_TOKEN\n');
   }
 
-  let token = process.env.OPEN_CRM_TOKEN;
+  let token = process.env.CRM_TOKEN;
   if (!token) {
     const login = await fetch(`${BASE}/api/v1/auth/login`, {
       method: 'POST',
@@ -264,7 +263,7 @@ async function main() {
     }),
   });
   const mcpBody = await mcpInit.text();
-  check('MCP initialize succeeds', mcpInit.status === 200 && mcpBody.includes('open-crm'));
+  check('MCP initialize succeeds', mcpInit.status === 200 && mcpBody.includes('crm'));
 
   process.stdout.write(`\n${passed} passed, ${failed} failed\n`);
   process.exit(failed === 0 ? 0 : 1);

@@ -107,7 +107,7 @@ export function getDefaultPipeline(ctx: Ctx): PipelineRow {
     .get() as PipelineRow | undefined;
   if (!row) {
     throw badRequest('No pipeline exists yet', {
-      hint: 'Create one with POST /api/v1/pipelines, or run `open-crm seed` to install the default sales pipeline.',
+      hint: 'Create one with POST /api/v1/pipelines, or run `crm seed` to install the default sales pipeline.',
     });
   }
   return row;

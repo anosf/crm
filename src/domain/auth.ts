@@ -298,7 +298,7 @@ export function purgeExpiredSessions(db: Db): number {
 
 // -- API tokens ---------------------------------------------------------------
 
-export const TOKEN_PREFIX = 'ocrm';
+export const TOKEN_PREFIX = 'crm';
 
 export type TokenRow = {
   id: string;

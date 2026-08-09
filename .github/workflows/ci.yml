@@ -37,7 +37,7 @@ jobs:
       - run: npm run build:web
       - name: Start the server
         run: |
-          OPEN_CRM_SECRET=ci-secret-for-smoke-testing-only \
+          CRM_SECRET=ci-secret-for-smoke-testing-only \
           DATABASE_URL=/tmp/ci.db PORT=4000 LOG_LEVEL=warn \
           node src/main.ts &
           for i in $(seq 1 30); do
@@ -52,11 +52,11 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Build the image
-        run: docker build -t open-crm:ci .
+        run: docker build -t crm:ci .
       - name: Boot it and check readiness
         run: |
           docker run -d --name crm -p 4000:4000 \
-            -e OPEN_CRM_SECRET=ci-secret-for-smoke-testing-only open-crm:ci
+            -e CRM_SECRET=ci-secret-for-smoke-testing-only crm:ci
           for i in $(seq 1 40); do
             curl -fsS http://localhost:4000/readyz && exit 0
             sleep 2

@@ -644,7 +644,7 @@ export function buildOpenApiDocument(publicUrl: string): Record<string, unknown>
         tags: ['webhooks'],
         operationId: 'createWebhook',
         description:
-          'Deliveries are signed with `x-open-crm-signature: sha256=HMAC(secret, "<timestamp>.<body>")`.',
+          'Deliveries are signed with `x-crm-signature: sha256=HMAC(secret, "<timestamp>.<body>")`.',
         requestBody: jsonBody('WebhookCreate'),
         responses: {
           '201': jsonResponse('The webhook, including its signing secret (shown once)'),
@@ -780,7 +780,7 @@ export function buildOpenApiDocument(publicUrl: string): Record<string, unknown>
   return {
     openapi: '3.1.0',
     info: {
-      title: 'open-crm',
+      title: 'crm',
       version: VERSION,
       description:
         'A self-hosted CRM designed to be operated by humans through a web UI and by AI agents through this API, an MCP server, and a CLI — all three sharing one service layer, one permission model, and one audit trail.',
@@ -795,12 +795,12 @@ export function buildOpenApiDocument(publicUrl: string): Record<string, unknown>
           type: 'http',
           scheme: 'bearer',
           description:
-            'An API token: `Authorization: Bearer ocrm_...`. This is how agents authenticate.',
+            'An API token: `Authorization: Bearer crm_...`. This is how agents authenticate.',
         },
         sessionCookie: {
           type: 'apiKey',
           in: 'cookie',
-          name: 'ocrm_session',
+          name: 'crm_session',
           description: 'Set by POST /api/v1/auth/login. Used by the web UI.',
         },
       },

@@ -55,9 +55,9 @@ export function backupDatabase(db: Db, destination: string): BackupResult {
   };
 }
 
-/** `data/backups/open-crm-2026-08-08T19-20-00.db` */
+/** `data/backups/crm-2026-08-08T19-20-00.db` */
 export function defaultBackupPath(databaseUrl: string, now = new Date()): string {
   const stamp = now.toISOString().replace(/[:.]/g, '-').replace(/Z$/, '');
   const base = databaseUrl === ':memory:' ? resolve('data', 'memory.db') : resolve(databaseUrl);
-  return resolve(dirname(base), 'backups', `open-crm-${stamp}.db`);
+  return resolve(dirname(base), 'backups', `crm-${stamp}.db`);
 }

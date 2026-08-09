@@ -19,4 +19,4 @@ function readPackageVersion(): string {
 }
 
 export const VERSION = readPackageVersion();
-export const USER_AGENT = `open-crm/${VERSION}`;
+export const USER_AGENT = `crm/${VERSION}`;

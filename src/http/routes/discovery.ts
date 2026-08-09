@@ -17,7 +17,7 @@ export function buildDiscovery(app: App): Record<string, unknown> {
 
   return {
     object: 'discovery',
-    name: 'open-crm',
+    name: 'crm',
     version: VERSION,
     description:
       'Self-hosted CRM with a shared service layer behind REST, MCP, and a CLI. Humans and agents see the same data, the same permissions, and the same audit trail.',
@@ -34,7 +34,7 @@ export function buildDiscovery(app: App): Record<string, unknown> {
     authentication: {
       recommended_for_agents: 'bearer_token',
       bearer_token: {
-        header: 'Authorization: Bearer ocrm_<prefix>_<secret>',
+        header: 'Authorization: Bearer crm_<prefix>_<secret>',
         how_to_get_one:
           'A signed-in human creates one: POST /api/v1/tokens {"name":"my-agent","scopes":["contacts:write","deals:read"]}',
         note: 'The token value is shown exactly once. Every write it makes is attributed to it in the audit log.',
@@ -211,7 +211,7 @@ export function buildDiscovery(app: App): Record<string, unknown> {
     interfaces: {
       rest: { openapi: `${url}/openapi.json`, base: `${url}/api/v1` },
       mcp: {
-        stdio: 'npm run mcp  (env: OPEN_CRM_URL, OPEN_CRM_TOKEN)',
+        stdio: 'npm run mcp  (env: CRM_URL, CRM_TOKEN)',
         http: `${url}/mcp`,
         note: 'The MCP server exposes the same operations as tools, with the same scopes and audit trail.',
       },

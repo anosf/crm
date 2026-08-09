@@ -1,14 +1,14 @@
 {
-  "name": "open-crm-server",
-  "version": "0.1.1",
-  "description": "Self-hosted, open-source CRM built for humans and AI agents \u2014 REST, MCP, and CLI on one service layer with a reversible audit trail.",
+  "name": "@anosf/crm",
+  "version": "0.2.0",
+  "description": "Agent-native, self-hosted CRM \u2014 REST, MCP, and CLI on one service layer with a reversible audit trail.",
   "license": "MIT",
   "type": "module",
   "engines": {
     "node": ">=22.18.0"
   },
   "bin": {
-    "open-crm": "src/cli/main.ts"
+    "crm": "src/cli/main.ts"
   },
   "scripts": {
     "dev": "node --watch src/main.ts",
@@ -47,6 +47,7 @@
   },
   "keywords": [
     "crm",
+    "agent-native",
     "self-hosted",
     "open-source",
     "mcp",
@@ -57,17 +58,18 @@
     "fastify",
     "typescript",
     "llm-tools",
-    "claude"
+    "claude",
+    "anosf"
   ],
-  "homepage": "https://github.com/yamz8/open-crm#readme",
+  "homepage": "https://github.com/anosf/crm#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yamz8/open-crm.git"
+    "url": "git+https://github.com/anosf/crm.git"
   },
   "bugs": {
-    "url": "https://github.com/yamz8/open-crm/issues"
+    "url": "https://github.com/anosf/crm/issues"
   },
-  "author": "open-crm contributors",
+  "author": "ANOSF \u2014 Agent Native Open Source Foundation",
   "files": [
     "src/",
     "!src/**/*.test.ts",

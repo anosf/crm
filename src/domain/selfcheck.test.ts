@@ -163,9 +163,9 @@ describe('webhooks', () => {
 
     let verified = false;
     const receiver = async (_url: string, init: any) => {
-      const timestamp = init.headers['x-open-crm-timestamp'];
+      const timestamp = init.headers['x-crm-timestamp'];
       const expected = `sha256=${signPayload(secret, timestamp, init.body)}`;
-      verified = init.headers['x-open-crm-signature'] === expected;
+      verified = init.headers['x-crm-signature'] === expected;
       return { ok: true, status: 200 } as Response;
     };
 

@@ -29,7 +29,7 @@ async function request<T = any>(
   const response = await fetch(`/api/v1${path}`, {
     method,
     credentials: 'same-origin',
-    headers: { 'content-type': 'application/json', 'x-requested-with': 'open-crm-web', ...headers },
+    headers: { 'content-type': 'application/json', 'x-requested-with': 'crm-web', ...headers },
     ...(body === undefined ? {} : { body: JSON.stringify(body) }),
   });
 

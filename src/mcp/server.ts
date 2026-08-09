@@ -11,9 +11,9 @@ import { TOOLS, TOOLS_BY_NAME } from './tools.ts';
 import type { Executor } from './executor.ts';
 import { VERSION } from '../core/version.ts';
 
-export const MCP_SERVER_INFO = { name: 'open-crm', version: VERSION };
+export const MCP_SERVER_INFO = { name: 'crm', version: VERSION };
 
-const INSTRUCTIONS = `open-crm is a self-hosted CRM you share with human colleagues.
+const INSTRUCTIONS = `crm is a self-hosted CRM you share with human colleagues.
 
 Orientation:
 - crm_whoami tells you which credentials you hold and what they may do.

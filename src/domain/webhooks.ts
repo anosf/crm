@@ -229,10 +229,10 @@ export async function flushDeliveries(
         headers: {
           'content-type': 'application/json',
           'user-agent': USER_AGENT,
-          'x-open-crm-event': row.event,
-          'x-open-crm-delivery': row.id,
-          'x-open-crm-timestamp': timestamp,
-          'x-open-crm-signature': `sha256=${signature}`,
+          'x-crm-event': row.event,
+          'x-crm-delivery': row.id,
+          'x-crm-timestamp': timestamp,
+          'x-crm-signature': `sha256=${signature}`,
         },
         body: row.payload,
         // A public URL must not be able to bounce the request into the private

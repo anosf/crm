@@ -133,7 +133,7 @@ export function selfCheck(
         name: 'search_index',
         status: 'warn',
         message: 'Search index does not match the record counts',
-        remedy: 'POST /api/v1/system/selfcheck?repair=true, or run `open-crm reindex`.',
+        remedy: 'POST /api/v1/system/selfcheck?repair=true, or run `crm reindex`.',
         details: indexProblems,
         repairable: true,
       });
@@ -197,12 +197,12 @@ export function selfCheck(
     name: 'instance_secret',
     status: usingDefaultSecret ? (config.env === 'production' ? 'fail' : 'warn') : 'pass',
     message: usingDefaultSecret
-      ? 'OPEN_CRM_SECRET is unset, so sessions and API tokens use a well-known development key'
+      ? 'CRM_SECRET is unset, so sessions and API tokens use a well-known development key'
       : 'Instance secret is configured',
     ...(usingDefaultSecret
       ? {
           remedy:
-            'Set OPEN_CRM_SECRET to a random 32-byte hex string (`openssl rand -hex 32`) and restart. Existing sessions and tokens will be invalidated.',
+            'Set CRM_SECRET to a random 32-byte hex string (`openssl rand -hex 32`) and restart. Existing sessions and tokens will be invalidated.',
         }
       : {}),
   });

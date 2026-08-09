@@ -14,7 +14,7 @@ describe('backups', () => {
 
   before(async () => {
     h = await createHarness({ seed: true });
-    workDir = mkdtempSync(join(tmpdir(), 'open-crm-backup-'));
+    workDir = mkdtempSync(join(tmpdir(), 'crm-backup-'));
   });
   after(async () => {
     await h.close();
@@ -77,8 +77,8 @@ describe('backups', () => {
   });
 
   test('the default path is timestamped and lives beside the database', () => {
-    const path = defaultBackupPath('/srv/data/open-crm.db', new Date('2026-08-08T19:56:30Z'));
-    assert.equal(path, resolve('/srv/data/backups/open-crm-2026-08-08T19-56-30-000.db'));
+    const path = defaultBackupPath('/srv/data/crm.db', new Date('2026-08-08T19:56:30Z'));
+    assert.equal(path, resolve('/srv/data/backups/crm-2026-08-08T19-56-30-000.db'));
   });
 });
 

@@ -103,7 +103,7 @@ function shell(content: HTMLElement): HTMLElement {
     h(
       'aside',
       { class: 'sidebar' },
-      h('div', { class: 'brand' }, h('div', { class: 'brand-mark' }, '◇'), 'open-crm'),
+      h('div', { class: 'brand' }, h('div', { class: 'brand-mark' }, '◇'), 'ANOSF CRM'),
       h(
         'button',
         { class: 'nav-item', onclick: () => openPalette() },
@@ -256,7 +256,7 @@ function authScreen(mode: 'login' | 'setup'): HTMLElement {
       h(
         'div',
         { class: 'auth-head' },
-        h('div', { class: 'brand' }, h('div', { class: 'brand-mark' }, '◇'), 'open-crm'),
+        h('div', { class: 'brand' }, h('div', { class: 'brand-mark' }, '◇'), 'ANOSF CRM'),
         h(
           'div',
           { class: 'subtle' },
@@ -1384,7 +1384,7 @@ async function agentsView(): Promise<HTMLElement> {
           h(
             'div',
             { class: 'token-value' },
-            `claude mcp add open-crm --env OPEN_CRM_URL=${location.origin} --env OPEN_CRM_TOKEN=<token> -- npx open-crm-server mcp`,
+            `claude mcp add crm --env CRM_URL=${location.origin} --env CRM_TOKEN=<token> -- npx @anosf/crm mcp`,
           ),
           h(
             'p',
@@ -1573,7 +1573,7 @@ function showTokenModal(created: any): void {
       h(
         'div',
         { class: 'token-value' },
-        `claude mcp add open-crm --env OPEN_CRM_URL=${location.origin} --env OPEN_CRM_TOKEN=${created.token} -- npx open-crm-server mcp`,
+        `claude mcp add crm --env CRM_URL=${location.origin} --env CRM_TOKEN=${created.token} -- npx @anosf/crm mcp`,
       ),
     ),
     [h('button', { class: 'btn-primary', onclick: () => closeModal() }, 'Done')],
