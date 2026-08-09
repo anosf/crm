@@ -1,0 +1,86 @@
+{
+  "name": "@anosf/crm",
+  "version": "0.1.0",
+  "description": "Agent-native, self-hosted CRM \u2014 REST, MCP, and CLI on one service layer with a reversible audit trail.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "bin": {
+    "crm": "src/cli/main.ts"
+  },
+  "scripts": {
+    "dev": "node --watch src/main.ts",
+    "start": "node src/main.ts",
+    "mcp": "node src/mcp/stdio.ts",
+    "cli": "node src/cli/main.ts",
+    "build:web": "node scripts/build-web.mjs",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "node --test --test-concurrency=1 \"src/**/*.test.ts\"",
+    "test:watch": "node --test --watch \"src/**/*.test.ts\"",
+    "smoke": "node scripts/smoke.mjs",
+    "check": "npm run format:check && npm run typecheck && npm run build:web && npm run test",
+    "seed": "node src/cli/main.ts seed --demo",
+    "migrate": "node src/cli/main.ts migrate",
+    "backup": "node src/cli/main.ts backup",
+    "selfcheck": "node src/cli/main.ts selfcheck",
+    "prepublishOnly": "npm run check"
+  },
+  "dependencies": {
+    "@fastify/cookie": "^11.1.2",
+    "@fastify/rate-limit": "^11.2.0",
+    "@fastify/static": "^10.1.3",
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "better-sqlite3": "^13.0.3",
+    "fastify": "^5.11.3",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^22.10.0",
+    "esbuild": "^0.28.1",
+    "prettier": "^3.9.6",
+    "typescript": "^5.9.3"
+  },
+  "keywords": [
+    "crm",
+    "agent-native",
+    "self-hosted",
+    "open-source",
+    "mcp",
+    "model-context-protocol",
+    "ai-agents",
+    "sales",
+    "sqlite",
+    "fastify",
+    "typescript",
+    "llm-tools",
+    "claude",
+    "anosf"
+  ],
+  "homepage": "https://github.com/anosf/crm#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anosf/crm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/anosf/crm/issues"
+  },
+  "author": "ANOSF \u2014 Agent Native Open Source Foundation",
+  "files": [
+    "src/",
+    "!src/**/*.test.ts",
+    "scripts/build-web.mjs",
+    "scripts/smoke.mjs",
+    "tsconfig.json",
+    "README.md",
+    "AGENTS.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
