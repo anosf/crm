@@ -1,6 +1,6 @@
 {
   "name": "@anosf/crm",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Agent-native, self-hosted CRM \u2014 REST, MCP, and CLI on one service layer with a reversible audit trail.",
   "license": "MIT",
   "type": "module",
@@ -8,7 +8,7 @@
     "node": ">=22.18.0"
   },
   "bin": {
-    "crm": "src/cli/main.ts"
+    "crm": "dist/cli/main.js"
   },
   "scripts": {
     "dev": "node --watch src/main.ts",
@@ -27,7 +27,8 @@
     "migrate": "node src/cli/main.ts migrate",
     "backup": "node src/cli/main.ts backup",
     "selfcheck": "node src/cli/main.ts selfcheck",
-    "prepublishOnly": "npm run check"
+    "prepublishOnly": "npm run check && npm run build",
+    "build": "node scripts/build.mjs"
   },
   "dependencies": {
     "@fastify/cookie": "^11.1.2",
@@ -71,11 +72,9 @@
   },
   "author": "ANOSF \u2014 Agent Native Open Source Foundation",
   "files": [
-    "src/",
-    "!src/**/*.test.ts",
-    "scripts/build-web.mjs",
-    "scripts/smoke.mjs",
-    "tsconfig.json",
+    "dist/",
+    "public/",
+    "src/db/migrations/",
     "README.md",
     "AGENTS.md",
     "LICENSE"

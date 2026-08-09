@@ -6,6 +6,17 @@ versions may contain breaking changes — those are always listed first.
 
 ## [Unreleased]
 
+## [0.1.1] — 2026-08-09
+
+### Fixed
+
+- **The npm package could not run.** `bin` pointed at `src/cli/main.ts`, and Node refuses to
+  strip types for files under `node_modules` — so `npx @anosf/crm mcp`, the package's whole
+  purpose, failed with `ERR_UNSUPPORTED_NODE_MODULES_TYPE_STRIPPING`. Publishing now ships
+  compiled JavaScript in `dist/`. Running from a clone still executes the TypeScript directly.
+- The published tarball omitted `public/`, so a server started from an npm install had no web
+  UI. The build now produces the browser bundle and the tarball includes it.
+
 ## [0.1.0] — 2026-08-09
 
 First release. A self-hosted CRM whose API is the primary surface rather than an afterthought:
@@ -70,5 +81,6 @@ permission model, the same validation, and the same reversible audit trail.
 - Passwords are hashed with scrypt; password attempts get their own tight rate-limit bucket,
   separate from the general request budget
 
-[Unreleased]: https://github.com/anosf/crm/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/anosf/crm/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/anosf/crm/releases/tag/v0.1.1
 [0.1.0]: https://github.com/anosf/crm/releases/tag/v0.1.0
